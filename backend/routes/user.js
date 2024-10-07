@@ -7,19 +7,19 @@ const { JWT_SECRET } = require("../config/config");
 const middleware = require("../middleware/middleware");
 
 const signupBody = zod.object({
-  username: zod.string().email(),
-  password: zod.string().min(6),
   firstName: zod.string(),
   lastName: zod.string(),
+  username: zod.string().email(),
+  password: zod.string().min(6),
 });
 
 router.post("/signup", async (req, res) => {
   // Validate the request body using Zod
-  const { success, error } = signupBody.safeParse(req.body);
+  console.log(req.body);
+  const { success } = signupBody.safeParse(req.body);
+  console.log(success);
   if (!success) {
-    return res
-      .status(400)
-      .json({ message: "Invalid input", error: error.errors });
+    return res.status(400).json({ message: "Invalid input" });
   }
 
   // Check if a user already exists with the given username (email)
@@ -107,11 +107,11 @@ router.get("/bulk", middleware, async (req, res) => {
     const filter = req.query.filter || "";
     const users = await User.find({
       $or: [
-        { firstName: { $regex: filter, $options: "i" } }, // Case insensitive search
+        { firstName: { $regex: filter, $options: "i" } },
         { lastName: { $regex: filter, $options: "i" } },
       ],
     });
-
+    console.log(users);
     res.status(200).json({
       users: users.map((user) => ({
         username: user.username,

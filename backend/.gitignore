@@ -1,3 +1,13 @@
+# Ignore environment variables file
 .env
+
+# Ignore configuration directory
 /config/config
-/node_modules
+
+# Ignore node_modules directory (commonly used in Node.js projects)
+node_modules/
+# Ignore the config file inside the config folder
+/config/config
+
+# Ensure the config folder itself is not ignored
+!config/
